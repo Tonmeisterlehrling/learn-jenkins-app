@@ -81,8 +81,9 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install netlify-cli
-                    node_modules/.bin/netlify deploy --dir=build
+                    npm install netlify-cli node-jq
+                    node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
+                    node_modules/.bin/node-jp -r '.deploy_url' deploy-output.json
                 '''
             }
         }   
