@@ -82,6 +82,7 @@ pipeline {
             steps {
                 sh '''
                     npm install netlify-cli node-jq
+                    node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --json > deploy-output.json
                     node_modules/.bin/node-jp -r '.deploy_url' deploy-output.json
                 '''
@@ -90,7 +91,7 @@ pipeline {
 
         stage('Approval') {
             steps {
-                timeout(1) {
+                timeout(15, unit: 'MINUTES') {
                     input message: 'Do you wish to deploy to production?', ok: 'Yes, I am sure!'
                 }
             }
